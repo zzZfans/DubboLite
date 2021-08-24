@@ -14,7 +14,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter implements 
 
     private ChannelHandlerContext context;
     private Invocation invocation;
-    private String result;
+    private Object result;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
@@ -23,7 +23,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter implements 
 
     @Override
     public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) {
-        result = msg.toString();
+        result = msg;
         notify();
     }
 

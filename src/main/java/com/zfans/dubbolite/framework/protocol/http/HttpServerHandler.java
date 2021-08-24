@@ -5,13 +5,10 @@ import com.zfans.dubbolite.provider.LocalRegister;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.lang.reflect.InvocationTargetException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
-import java.nio.charset.Charset;
 
 /**
  * @Author Zfans
@@ -28,7 +25,8 @@ public class HttpServerHandler {
             ServletInputStream reqInputStream = req.getInputStream();
             ObjectInputStream objectInputStream = new ObjectInputStream(reqInputStream);
             Invocation invocation = (Invocation) objectInputStream.readObject();
-            System.out.println("invocation: " + invocation);
+            objectInputStream.close();
+            System.out.println("调用对象：" + invocation);
             // 获取接口名
             String interfaceName = invocation.getInterfaceName();
             // 获取版本号
@@ -38,16 +36,14 @@ public class HttpServerHandler {
             // 通过 {方法名} 和 {参数类型列表} 唯一确定方法
             Method method = implClass.getMethod(invocation.getMethodName(), invocation.getParamType());
             // 反射执行方法
-            String result = (String) method.invoke(implClass.newInstance(), invocation.getParams());
-            System.out.println("result: " + result);
+            Object result = method.invoke(implClass.newInstance(), invocation.getParams());
+            System.out.println("反射执行结果：" + result);
             // 将结果返回
-            IOUtils.write(result, resp.getOutputStream(), Charset.defaultCharset());
-        } catch (IOException |
-                ClassNotFoundException |
-                NoSuchMethodException |
-                IllegalAccessException |
-                InstantiationException |
-                InvocationTargetException e) {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(resp.getOutputStream());
+            objectOutputStream.writeObject(result);
+            objectOutputStream.flush();
+            objectOutputStream.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

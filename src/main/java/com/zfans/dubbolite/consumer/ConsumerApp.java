@@ -1,5 +1,6 @@
 package com.zfans.dubbolite.consumer;
 
+import com.zfans.dubbolite.entity.User;
 import com.zfans.dubbolite.framework.ProxyFactory;
 import com.zfans.dubbolite.provider.service.HelloService;
 
@@ -10,10 +11,15 @@ import com.zfans.dubbolite.provider.service.HelloService;
 public class ConsumerApp {
     public static void main(String[] args) {
 
-        HelloService helloService = ProxyFactory.getProxy(HelloService.class, "1");
+        HelloService helloService = ProxyFactory
+                .getProxy(HelloService.class, "1");
 
-        String result = helloService.sayHello("Zfans");
+        User user = new User("kaola", 6);
 
-        System.out.println(result);
+        System.out.println("发起 RPC 调用。");
+        String result = helloService.sayHello(user);
+        System.out.println("RPC 调用完毕。");
+
+        System.out.println("结果：" + result);
     }
 }

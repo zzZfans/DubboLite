@@ -16,6 +16,9 @@ public class HttpServer {
 
         Tomcat tomcat = new Tomcat();
 
+        // 日志级别设置为 WARN
+        tomcat.setSilent(true);
+
         // 相当于配置 server.xml
 
         Server server = tomcat.getServer();
@@ -47,6 +50,7 @@ public class HttpServer {
 
         try {
             tomcat.start();
+            // System.out.println("Tomcat 已启动对 " + hostname + ":" + port + " 的监听。");
             tomcat.getServer().await();
         } catch (LifecycleException e) {
             e.printStackTrace();

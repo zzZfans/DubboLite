@@ -17,7 +17,7 @@ public class DubboProtocol implements Protocol {
     }
 
     @Override
-    public String send(URL url, Invocation invocation) {
+    public Object send(URL url, Invocation invocation) {
         NettyClient nettyClient = new NettyClient();
         return nettyClient.send(url.getHostname(), url.getPort(), invocation);
     }

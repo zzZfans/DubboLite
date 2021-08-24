@@ -1,15 +1,13 @@
 package com.zfans.dubbolite.framework.protocol.http;
 
 import com.zfans.dubbolite.framework.Invocation;
-import org.apache.commons.io.IOUtils;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
 
 /**
  * @Author Zfans
@@ -17,7 +15,7 @@ import java.nio.charset.Charset;
  */
 public class HttpClient {
 
-    public String send(String hostname, Integer port, Invocation invocation) {
+    public Object send(String hostname, Integer port, Invocation invocation) {
 
         try {
 
@@ -36,13 +34,18 @@ public class HttpClient {
             objectOutputStream.flush();
             objectOutputStream.close();
 
+            // System.out.println("http 请求已发送至 " + hostname + ":" + port);
+
             InputStream inputStream = httpURLConnection.getInputStream();
 
-            String result = IOUtils.toString(inputStream, Charset.defaultCharset());
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
+            Object result = objectInputStream.readObject();
+            objectInputStream.close();
 
             return result;
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

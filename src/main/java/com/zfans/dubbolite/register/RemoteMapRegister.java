@@ -33,7 +33,7 @@ public class RemoteMapRegister implements Register {
 
         saveFile();
 
-        System.out.println("Registered through RemoteMapRegister.");
+        // System.out.println(interfaceName + " 已注册到注册中心 RemoteMapRegister 。");
     }
 
     @Override
@@ -43,7 +43,7 @@ public class RemoteMapRegister implements Register {
 
         List<URL> list = REGISTER.get(interfaceName);
 
-        System.out.println("Get the urlList from RemoteMapRegister.");
+        // System.out.println("从 RemoteMapRegister 中获取到 " + interfaceName + " 的 urlList 。");
 
         return list;
     }

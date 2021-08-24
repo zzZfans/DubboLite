@@ -55,7 +55,7 @@ public class NettyClient {
         }
     }
 
-    public String send(String hostName, Integer port, Invocation invocation) {
+    public Object send(String hostName, Integer port, Invocation invocation) {
 
         if (client == null) {
             start(hostName, port);
@@ -64,7 +64,7 @@ public class NettyClient {
         client.setInvocation(invocation);
 
         try {
-            return (String) executorService.submit(client).get();
+            return executorService.submit(client).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }

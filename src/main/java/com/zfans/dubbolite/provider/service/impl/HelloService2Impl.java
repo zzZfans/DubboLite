@@ -1,5 +1,6 @@
 package com.zfans.dubbolite.provider.service.impl;
 
+import com.zfans.dubbolite.entity.User;
 import com.zfans.dubbolite.provider.service.HelloService;
 
 /**
@@ -13,5 +14,10 @@ public class HelloService2Impl implements HelloService {
     @Override
     public String sayHello(String name) {
         return "Hello " + name + "! version: " + VERSION;
+    }
+
+    @Override
+    public String sayHello(User user) {
+        return "Hello " + user + "! version: " + VERSION;
     }
 }
